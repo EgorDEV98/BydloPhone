@@ -1,0 +1,47 @@
+services:
+  server:
+    build:
+      context: ./BydloPhone.Server
+      dockerfile: BydloPhone.Server/Dockerfile
+    container_name: bydlophone-server
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      Services__Stt: http://stt:8000
+      Services__Tts: http://tts:8001
+    ports:
+      - "8080:8080"
+    depends_on:
+      - stt
+      - tts
+
+  stt:
+    build:
+      context: ./Stt
+    container_name: bydlophone-stt
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - stt-cache:/root/.cache/huggingface
+
+  tts:
+    build:
+      context: ./Tts
+    container_name: bydlophone-tts
+    restart: unless-stopped
+    environment:
+      COQUI_TOS_AGREED: "1"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TORCH_NUM_THREADS: "4"
+      TTS_MODEL_LOAD_ATTEMPTS: "5"
+      TTS_MODEL_LOAD_RETRY_SECONDS: "15"
+    ports:
+      - "8001:8001"
+    volumes:
+      - tts-models:/root/.local/share/tts
+
+volumes:
+  stt-cache:
+  tts-models:

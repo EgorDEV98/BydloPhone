@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.env
+.git/
+.gitignore
+.DS_Store
+*.wav
+*.mp3
+*.ogg
+*.flac

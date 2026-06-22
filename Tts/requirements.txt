@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+numpy<2
+torch==2.2.2
+torchaudio==2.2.2
+transformers==4.33.3
+TTS==0.22.0
